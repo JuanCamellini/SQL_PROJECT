@@ -22,11 +22,24 @@ el factor principal en la demanda para roles remotos.
 ![alt text](queries_python/images/skills_demand_remote_jobs.png)
 
 **Insight**  
-Alta Demanda por Big Data y ML skills: Los roles mejor pagos priorizan habilidades en análisis de grandes volúmenes de datos y Machine Learning, ya que permiten optimizar decisiones, automatizar procesos y generar ventajas competitivas directas.
+Skills mejor pagas en roles de Data & AI
+- Los salarios más altos se concentran en skills que permiten escalar, automatizar y mantener sistemas en producción, no en herramientas aisladas o “de moda”.
+- Las tecnologías mejor pagas aparecen cuando forman parte del core del stack: pipelines de datos, infraestructura, MLOps y sistemas distribuidos.
+- El valor salarial no depende tanto del lenguaje en sí, sino de dónde se usa dentro del sistema (orquestación, procesamiento, despliegue, confiabilidad).
 
-Desarrollo de Software y Eficiencia en Deployment: La capacidad de desarrollar, escalar y desplegar software de forma eficiente (CI/CD, optimización de performance) es clave en los puestos de mayor remuneración.
+Trabajo remoto
+En los roles remotos, los mejores salarios están asociados a skills portables y estandarizadas, que permiten impacto sin depender del contexto interno de la empresa:
+- Procesamiento y análisis de datos a gran escala: PySpark, Databricks, Pandas, NumPy, Airflow
+- Flujos de trabajo colaborativos y reproducibles: GitLab, Bitbucket, Jupyter
+- Fundamentos de data engineering y cloud: GCP, PostgreSQL, Elasticsearch
+Los puestos remotos premian la autonomía técnica y la capacidad de diseñar y mantener soluciones end-to-end con mínima supervisión.
 
-Cloud Computing: El dominio de plataformas cloud facilita la escalabilidad y reducción de costos, convirtiéndose en una skill crítica y altamente valorada en los trabajos top paying.
+Trabajo presencial (onsite)
+En los roles presenciales, los salarios más altos están ligados a skills fuertemente integradas a la infraestructura interna y a sistemas críticos de la organización:
+- Infraestructura y automatización: Terraform, Ansible, Puppet, VMware
+- Machine Learning avanzado y frameworks productivos: TensorFlow, PyTorch, Keras, Hugging Face
+- Sistemas empresariales y bases de datos especializadas: Cassandra, MongoDB, Aurora, SVN
+El trabajo onsite tiende a valorar más la especialización profunda, la cercanía con equipos de infraestructura y la gestión de entornos complejos y legacy.
 
 ![alt text](queries_python/images/skills_based_salary_comparision.png)
 

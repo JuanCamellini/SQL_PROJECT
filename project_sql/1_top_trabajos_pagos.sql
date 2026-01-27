@@ -21,6 +21,6 @@ WHERE
     salary_year_avg IS NOT NULL AND
     job_location = 'Anywhere'
 ORDER BY 
-    salary_y ear_avg DESC
+    salary_year_avg DESC
 LIMIT 10
 
