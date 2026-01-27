@@ -43,3 +43,13 @@ El trabajo onsite tiende a valorar más la especialización profunda, la cercan�
 
 ![alt text](queries_python/images/skills_based_salary_comparision.png)
 
+## generar insights
+optimal skills presencial
+
+![alt text](queries_python/images/optimal_skills_onsite.png)
+
+optimal skills remoto
+![alt text](queries_python/images/optimal_skills_remote.png)
+
+comparacion de las dos
+![alt text](queries_python/images/skill_demand_salary_remote_onsite.png)
