@@ -7,7 +7,7 @@ El análisis se centra en identificar qué trabajos y skills ofrecen los salario
 
 El proyecto se desarrolló en dos etapas principales:
 
-1. SQL Analisis (PostgreSQL)
+### 1. SQL Analisis (PostgreSQL)
 Se realizaron 5 queries principales en SQL, conectadas a una base de datos en PostgreSQL, cada una diseñada para responder una pregunta clave del mercado laboral:
 - ¿Cuáles son los trabajos mejor pagos?
 - ¿Cuáles son las skills mejor pagas?
@@ -22,7 +22,7 @@ Estas consultas incluyeron el uso de:
 - Filtros por modalidad (remote vs onsite)
 - Análisis salarial y de demanda
 
-2. Python Analisis y Visualizacion
+### 2. Python Analisis y Visualizacion
 A partir de las tablas generadas en SQL, se realizó un análisis exploratorio y visual en Python, utilizando principalmente:
 - Pandas para manipulación y análisis de datos
 - Matplotlib y Seaborn para visualización
@@ -32,6 +32,8 @@ Los gráficos permiten visualizar de forma clara:
 - Comparaciones entre trabajo remoto y presencial
 - Skills con mejor relación salario–demanda
 - Tecnologías clave dentro del ecosistema de Data Analytics
+
+
 
 En los top 50 puestos mejor pagos de Data Analyst, SQL aparece como la skill más frecuente,
 lo que confirma que sigue siendo un requisito estructural incluso en roles de alto salario.
