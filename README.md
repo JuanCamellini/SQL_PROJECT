@@ -65,7 +65,8 @@ ORDER BY salary_month DESC;
 ```
 ### Visualizacion del Query
 ![Top Trabajos Remunerados](queries_python/images/top_pay_jobs.png)
-*El bar graphic muestra en orden por salario y las 5 empresas que tienen los mejores salarios.*
+
+*El grafico bar muestra en orden por salario y las 5 empresas que tienen los mejores salarios.*
 
 ## 2. Top Skills Mejores Pagas (Trabajos Remotos)
 En esta consulta se analizaron los 50 trabajos remotos mejor pagos para el rol de Data Analyst con el objetivo de identificar qué skills aparecen con mayor frecuencia en las posiciones de mayor salario.
@@ -96,8 +97,10 @@ INNER JOIN skills_dim AS sd ON sd.skill_id = sjd.skill_id
 ORDER BY top_paying_jobs.salary_month DESC;
 ```
 ### Visualizacion del Query
-![Top Skills Mejores Pagas](queries_python/images/skill_count_top_pay_job.png)
-*El graphic muestra la cantidad de veces que aparecen las Skills dentro de los mejores 50 trabajos.*
+
+![Top Skills Mejores Pagas](queries_python/images/skill_count_top_pay_job.png) 
+
+*El grafico muestra la cantidad de veces que aparecen las Skills dentro de los mejores 50 trabajos.*
 ### Insights:
 - SQL domina claramente el top de trabajos mejor pagos, apareciendo con mucha más frecuencia que cualquier otra skill, lo que confirma que sigue siendo el pilar técnico principal incluso en roles de alto salario.
 
@@ -105,40 +108,84 @@ ORDER BY top_paying_jobs.salary_month DESC;
 
 - Skills tradicionales como Excel, R y SAS siguen presentes, pero con menor peso relativo, lo que sugiere que no son diferenciadores fuertes frente a herramientas más modernas en el segmento top-paying.
 
-## Top Skills in High-Paying Data Analyst Roles
+## 3. Top Skills Demandadas en Trabajos de Data Analista (Remoto)
+En esta consulta se muestran las skills mas demandadas para los trabajos remotos. Con el objetivo de identificar qué skills se requieren para poder posicionarse dentro del mercado laboral.
+El conteo refleja cuántas veces cada skill es mencionada dentro todos los puestos de trabajo, permitiendo entender cuales son las más requeridas en el segmento laboral.
+### Codigo del Query
+``` SQL
+SELECT 
+    skills AS skill_name,
+    COUNT(skills_job.job_id) AS demand_count
+FROM job_postings_fact AS job_post
+INNER JOIN skills_job_dim AS skills_job ON skills_job.job_id = job_post.job_id
+INNER JOIN skills_dim ON skills_dim.skill_id = skills_job.skill_id
+WHERE 
+    job_post.job_title_short = 'Data Analyst' AND job_post.job_work_from_home = True
+GROUP BY skill_name
+ORDER BY demand_count DESC
+LIMIT 6;
+```
+### Visualizacion del Query
+![Top Skills Demandadas](queries_python/images/skills_demand_remote_jobs.png)
 
-![images](skill_count_top_pay_job.png)
+*El grafico muestra la cantidad de veces que aparecen las Skills en los trabajos Remotos de Data Analista.*
 
 ### Insights:
-En los puestos remotos de Data Analyst, SQL es claramente la skill más demandada,
-con una diferencia significativa respecto al resto. Esto refuerza que, incluso en
-roles remotos, la capacidad de consultar y transformar datos sigue siendo el núcleo
-del trabajo. Excel y Python aparecen en un segundo escalón, indicando que el perfil
-más buscado combina bases sólidas en SQL con habilidades de análisis y manipulación
-de datos. Las herramientas de BI (Tableau y Power BI) tienen presencia, pero no son
-el factor principal en la demanda para roles remotos.
+- SQL sigue dominando claramente en el top de skills, en este caso como la que mas se demanda dentro del mercado laboral, apareciendo con mucha más frecuencia que cualquier otra skill, lo que confirma que sigue siendo el pilar técnico principal incluso en trabajos remoto.
 
-![alt text](queries_python/images/skills_demand_remote_jobs.png)
+- Excel y Python ocupan el segundo y tercer lugar, mostrando que la combinación de análisis de datos y visualizacion de los mismos es altamente demandada en los puestos remotos.
 
-**Insight**  
-Skills mejor pagas en roles de Data & AI
-- Los salarios más altos se concentran en skills que permiten escalar, automatizar y mantener sistemas en producción, no en herramientas aisladas o “de moda”.
-- Las tecnologías mejor pagas aparecen cuando forman parte del core del stack: pipelines de datos, infraestructura, MLOps y sistemas distribuidos.
-- El valor salarial no depende tanto del lenguaje en sí, sino de dónde se usa dentro del sistema (orquestación, procesamiento, despliegue, confiabilidad).
+- Por ultimo tecnologias de visualizacion como Tableu y Power BI son las mas demandadas del mercado, y el lenguade de programacion R con menor peso relativo, lo que sugiere que sigue en uso pero en menor medida.
 
-Trabajo remoto
-En los roles remotos, los mejores salarios están asociados a skills portables y estandarizadas, que permiten impacto sin depender del contexto interno de la empresa:
-- Procesamiento y análisis de datos a gran escala: PySpark, Databricks, Pandas, NumPy, Airflow
-- Flujos de trabajo colaborativos y reproducibles: GitLab, Bitbucket, Jupyter
-- Fundamentos de data engineering y cloud: GCP, PostgreSQL, Elasticsearch
-Los puestos remotos premian la autonomía técnica y la capacidad de diseñar y mantener soluciones end-to-end con mínima supervisión.
 
-Trabajo presencial (onsite)
-En los roles presenciales, los salarios más altos están ligados a skills fuertemente integradas a la infraestructura interna y a sistemas críticos de la organización:
-- Infraestructura y automatización: Terraform, Ansible, Puppet, VMware
-- Machine Learning avanzado y frameworks productivos: TensorFlow, PyTorch, Keras, Hugging Face
-- Sistemas empresariales y bases de datos especializadas: Cassandra, MongoDB, Aurora, SVN
-El trabajo onsite tiende a valorar más la especialización profunda, la cercanía con equipos de infraestructura y la gestión de entornos complejos y legacy.
+## 4. Skills basadas en Salarios Altos (Remote vs Onsite) 
+En esta consulta se analizaron las skills asociadas a los salarios promedio más altos para el rol de Data Analyst, separando los resultados por modalidad de trabajo remota y presencial (onsite).
+El objetivo fue identificar qué tecnologías están vinculadas a los niveles salariales más elevados en cada modalidad y comparar si el mercado remunera distinto según el contexto de trabajo.
+### Codigo del Query
+``` SQL
+-- Trabajos Onsite
+SELECT 
+    ROUND(AVG(salary_year_avg),0) AS salary_avg,
+    skills_dim.skills AS skill_name
+FROM job_postings_fact as jpf
+LEFT JOIN skills_job_dim ON skills_job_dim.job_id = jpf.job_id
+LEFT JOIN skills_dim ON skills_dim.skill_id = skills_job_dim.skill_id
+WHERE 
+    jpf.job_title_short = 'Data Analyst' AND
+    jpf.salary_year_avg IS NOT NULL
+GROUP BY skills_dim.skills
+ORDER BY salary_avg DESC
+LIMIT 30;
+
+-- Trabajos Remotos
+SELECT 
+    ROUND(AVG(salary_year_avg),0) AS salary_avg,
+    skills_dim.skills AS skill_name
+FROM job_postings_fact as jpf
+LEFT JOIN skills_job_dim ON skills_job_dim.job_id = jpf.job_id
+LEFT JOIN skills_dim ON skills_dim.skill_id = skills_job_dim.skill_id
+WHERE 
+    jpf.job_title_short = 'Data Analyst' AND
+    jpf.salary_year_avg IS NOT NULL AND
+    jpf.job_work_from_home = True
+GROUP BY skills_dim.skills
+ORDER BY salary_avg DESC
+LIMIT 30;
+```
+### Visualizacion del Query
+![Skills Presencial vs Remoto](queries_python/images/skills_based_salary_comparision.png)
+
+*El grafico muestra el salario promedio mas alto asociado a su skill recurrente entre Presencial vs Remoto.*
+
+### Insights:
+- En trabajos remotos, los salarios más altos están asociados a skills de data engineering, big data y ecosistemas cloud, destacándose PySpark, Databricks-related tools, Pandas y Golang. Esto sugiere que el mercado remoto premia perfiles híbridos entre Data Analyst y Data Engineer.
+
+- En trabajos onsite, aparece una mayor dispersión salarial y casos extremos como SVN, con un salario muy superior al resto, lo que indica roles altamente específicos, legacy o de nicho, más comunes en entornos corporativos tradicionales.
+
+- Skills compartidas como Couchbase, DataRobot, Golang y Twilio aparecen en ambos modos, pero con mejor remuneración promedio en modalidad remota, reforzando la idea de que el trabajo remoto amplifica el valor de skills técnicas avanzadas en el mercado global.
+
+## 5. Optimal Skills – Remoto vs Presencial
+
 
 ![alt text](queries_python/images/skills_based_salary_comparision.png)
 
