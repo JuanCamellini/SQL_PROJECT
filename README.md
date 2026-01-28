@@ -1,3 +1,37 @@
+# Descripcion General del Proyecto
+Este proyecto tiene como objetivo analizar una base de datos de gran volumen sobre ofertas laborales en el mercado tecnológico, con un enfoque específico en puestos de Data Analyst, tanto en modalidad remota como presencial.
+
+El análisis se centra en identificar qué trabajos y skills ofrecen los salarios más altos, cuáles son las tecnologías más demandadas y qué combinaciones de salario y demanda hacen que una skill sea óptima para el mercado actual. El objetivo final es extraer insights accionables que ayuden a orientar decisiones de carrera y formación dentro del rol de Data Analyst.
+
+## Metodología y Herramientas
+
+El proyecto se desarrolló en dos etapas principales:
+
+1. SQL Analisis (PostgreSQL)
+Se realizaron 5 queries principales en SQL, conectadas a una base de datos en PostgreSQL, cada una diseñada para responder una pregunta clave del mercado laboral:
+- ¿Cuáles son los trabajos mejor pagos?
+- ¿Cuáles son las skills mejor pagas?
+- ¿Cuál es la demanda de skills en puestos de Data Analyst?
+- ¿Qué skills están asociadas a los salarios más altos?
+- ¿Cuáles son las skills más óptimas combinando salario y demanda?
+
+Estas consultas incluyeron el uso de:
+- Joins entre múltiples tablas
+- Funciones de agregación
+- CTEs
+- Filtros por modalidad (remote vs onsite)
+- Análisis salarial y de demanda
+
+2. Python Analisis y Visualizacion
+A partir de las tablas generadas en SQL, se realizó un análisis exploratorio y visual en Python, utilizando principalmente:
+- Pandas para manipulación y análisis de datos
+- Matplotlib y Seaborn para visualización
+- Gráficos comparativos entre modalidad remota y presencial
+- Scatter plots para identificar skills óptimas según salario y demanda
+Los gráficos permiten visualizar de forma clara:
+- Comparaciones entre trabajo remoto y presencial
+- Skills con mejor relación salario–demanda
+- Tecnologías clave dentro del ecosistema de Data Analytics
 
 En los top 50 puestos mejor pagos de Data Analyst, SQL aparece como la skill más frecuente,
 lo que confirma que sigue siendo un requisito estructural incluso en roles de alto salario.
