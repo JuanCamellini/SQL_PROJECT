@@ -33,7 +33,38 @@ Los gráficos permiten visualizar de forma clara:
 - Skills con mejor relación salario–demanda
 - Tecnologías clave dentro del ecosistema de Data Analytics
 
+## Top 10 Trabajos Remunerados de Data Analista
+En el siguiente grafico realizado con Pandas y Seaborn, visualizamos la primer query realizada en el proyecto,
+que responde a la primer pregunta. 
+Cuáles son las empresas en las que remunaran más a los Data Analistas? 
+Que salario tienen?
 
+### Codigo del Query
+``` SQL
+WITH ranked_jobs AS (
+    SELECT 
+        job_title,
+        ROUND(salary_year_avg / 12, 2) AS salary_month,
+        job_posted_date::DATE AS job_posted_date,
+        cd.name AS company_name,
+        ROW_NUMBER() OVER (
+            PARTITION BY job_title_short
+            ORDER BY salary_year_avg DESC
+        ) AS salary_rank
+    FROM job_postings_fact  jpf
+    LEFT JOIN company_dim  cd ON cd.company_id = jpf.company_id
+    WHERE
+        job_title_short = 'Data Analyst'
+        AND salary_year_avg IS NOT NULL
+        AND job_location = 'Anywhere'
+)
+SELECT *
+FROM ranked_jobs
+WHERE salary_rank <= 10
+ORDER BY salary_month DESC;
+```
+
+![Top Trabajos Remunerados](queries_python/images/top_pay_jobs.png)
 
 En los top 50 puestos mejor pagos de Data Analyst, SQL aparece como la skill más frecuente,
 lo que confirma que sigue siendo un requisito estructural incluso en roles de alto salario.

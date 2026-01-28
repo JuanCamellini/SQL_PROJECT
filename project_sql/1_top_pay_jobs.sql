@@ -4,23 +4,25 @@
 - Trabajos con salario no nulo.
 - Con los datos obtenidos podemos observar las oportunidades y requerimientos que ofrecen los trabajos de data analista
 */
+WITH ranked_jobs AS (
+    SELECT 
+        job_title,
+        ROUND(salary_year_avg / 12, 2) AS salary_month,
+        job_posted_date::DATE AS job_posted_date,
+        cd.name AS company_name,
+        ROW_NUMBER() OVER (
+            PARTITION BY job_title_short
+            ORDER BY salary_year_avg DESC
+        ) AS salary_rank
+    FROM job_postings_fact  jpf
+    LEFT JOIN company_dim  cd ON cd.company_id = jpf.company_id
+    WHERE
+        job_title_short = 'Data Analyst'
+        AND salary_year_avg IS NOT NULL
+        AND job_location = 'Anywhere'
+)
 
-SELECT 
-    job_id,
-    job_title_short,
-    job_title,
-    ROUND(salary_year_avg / 12, 2) AS salary_month,
-    job_posted_date::DATE,
-    company_dim.name
-FROM
-    job_postings_fact
-LEFT JOIN
-    company_dim ON company_dim.company_id = job_postings_fact.company_id
-WHERE
-    job_title_short = 'Data Analyst' AND 
-    salary_year_avg IS NOT NULL AND
-    job_location = 'Anywhere'
-ORDER BY 
-    salary_year_avg DESC
-LIMIT 10
-
+SELECT *
+FROM ranked_jobs
+WHERE salary_rank <= 10
+ORDER BY salary_month DESC;
