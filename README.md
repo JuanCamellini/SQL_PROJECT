@@ -185,17 +185,66 @@ LIMIT 30;
 - Skills compartidas como Couchbase, DataRobot, Golang y Twilio aparecen en ambos modos, pero con mejor remuneración promedio en modalidad remota, reforzando la idea de que el trabajo remoto amplifica el valor de skills técnicas avanzadas en el mercado global.
 
 ## 5. Optimal Skills – Remoto vs Presencial
+Este gráfico compara las skills más óptimas para Data Analysts según la relación entre demanda laboral (cantidad de job postings) y salario promedio, diferenciando entre trabajo remoto y presencial. El objetivo es identificar qué tecnologías ofrecen el mejor equilibrio entre alta remuneración y oportunidades reales en cada modalidad.
+### Codigo del Query
+```SQL
+-- Skills para trabajos Remotos
+SELECT 
+    skills_dim.skill_id,
+    skills_dim.skills,
+    COUNT(skills_job_dim.job_id) AS demand_count,
+    ROUND(AVG(job_postings_fact.salary_year_avg),0) AS salary_avg
+FROM job_postings_fact
+INNER JOIN skills_job_dim ON skills_job_dim.job_id = job_postings_fact.job_id
+INNER JOIN skills_dim ON skills_dim.skill_id = skills_job_dim.skill_id 
+WHERE 
+    job_postings_fact.job_title_short = 'Data Analyst' 
+    AND job_postings_fact.job_work_from_home = True 
+    AND job_postings_fact.salary_year_avg IS NOT NULL 
+GROUP BY skills_dim.skill_id
+HAVING COUNT(skills_job_dim.job_id) > 10
+ORDER BY    
+    salary_avg DESC,
+    demand_count DESC
+LIMIT 25;
+-- Skills para trabajos Presencial
+SELECT 
+    skills_dim.skill_id,
+    skills_dim.skills,
+    COUNT(skills_job_dim.job_id) AS demand_count,
+    ROUND(AVG(job_postings_fact.salary_year_avg),0) AS salary_avg
+FROM job_postings_fact
+INNER JOIN skills_job_dim ON skills_job_dim.job_id = job_postings_fact.job_id
+INNER JOIN skills_dim ON skills_dim.skill_id = skills_job_dim.skill_id 
+WHERE 
+    job_postings_fact.job_title_short = 'Data Analyst' 
+    AND job_postings_fact.salary_year_avg IS NOT NULL 
+GROUP BY skills_dim.skill_id
+HAVING COUNT(skills_job_dim.job_id) > 10
+ORDER BY    
+    salary_avg DESC,
+    demand_count DESC
+LIMIT 25;
+```
+### Visualizacion del Query
+![Skills Optimas Remoto vs Presencial](queries_python/images/skills_based_salary_comparision.png)
 
+*El grafico muestra las skills mas demandadas con mejores salarios. Comparacion Presencial vs Remoto.*
+### Insights:
+- Remoto: menos demanda, salarios más altos en skills especializadas
+Tecnologías como Kafka, PyTorch y TensorFlow muestran salarios elevados con una demanda moderada, lo que indica un mercado remoto más orientado a perfiles especializados y de nicho.
+- Presencial: mayor estabilidad en skills enterprise
+Skills como Hadoop, Snowflake, Azure y AWS combinan una demanda constante con salarios competitivos, reflejando una preferencia por tecnologías consolidadas en entornos corporativos.
+- Demanda ≠ mejor salario: en ambos modelos, algunas skills con alta demanda (ej. Linux, Confluence) no lideran en salario, lo que refuerza que la especialización estratégica pesa más que la popularidad pura.
 
-![alt text](queries_python/images/skills_based_salary_comparision.png)
+# Que Aprendizaje Obtuve
+Durante este proyecto reforcé el uso de SQL para análisis exploratorio y analítico, aplicando agregaciones, joins, subqueries y funciones de agrupación para responder preguntas reales del mercado laboral. Además, aprendí a traducir datos en visualizaciones claras y a interpretar métricas como demanda, salario promedio y trade-offs entre especialización y empleabilidad.
 
-## generar insights
-optimal skills presencial
+# Insights Generales
+Los resultados muestran que el trabajo remoto tiende a premiar skills más especializadas con salarios más altos, aunque con menor volumen de demanda, mientras que el modelo presencial prioriza tecnologías consolidadas y estables. La demanda por una skill no siempre implica un mejor salario, lo que resalta la importancia de elegir tecnologías estratégicas según el objetivo profesional.
 
-![alt text](queries_python/images/optimal_skills_onsite.png)
+# Desafíos que Enfrente
+Uno de los principales desafíos fue definir métricas comparables entre modalidades remoto y presencial, evitando sesgos por volumen de datos. También fue clave limpiar y agrupar correctamente las skills, y encontrar la mejor forma de visualizar la relación entre salario y demanda sin perder claridad.
 
-optimal skills remoto
-![alt text](queries_python/images/optimal_skills_remote.png)
-
-comparacion de las dos
-![alt text](queries_python/images/skill_demand_salary_remote_onsite.png)
+# Conclusion
+Este proyecto demuestra cómo SQL puede utilizarse para generar insights accionables sobre el mercado laboral en Data Analytics. A partir de los datos, es posible identificar skills óptimas según contexto y modalidad de trabajo, ofreciendo una base sólida para la toma de decisiones tanto para profesionales como para empresas.
